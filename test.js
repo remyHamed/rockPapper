@@ -1,26 +1,29 @@
-
-// let arg =  {
-//     "init": {
-//         "players":2
-//     }
-// };
-
 process.stdin.resume();
 
 process.stdin.setEncoding('utf8');
 
+let json = '';
 
-process.stdin.on('readable', () => {
-    let chunk;
-    // Use a loop to make sure we read all available data.
-    while ((chunk = process.stdin.read()) !== null) {
-      console.log(`Received data: ${chunk.trim()}`);
+process.stdin.on('data', function(chunk) {
+    data += chunk;
+
+    // Check if data ends with two newline characters
+    while (data.endsWith('\n\n')) {
+        // Remove trailing newlines
+        json = json.slice(0, -2);
+
+        try {
+            const jsonData = JSON.parse(json);
+            console.log('Received JSON data:', jsonData);
+            // Now you can work with jsonData as a JavaScript object
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+        }
+
+        // Clear data for next JSON object
+        data = '';
     }
-  });
-  
-  process.stdin.on('end', () => {
-    process.exit();
-  });
+});
 
 
 process.on('SIGINT', function() {
