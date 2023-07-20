@@ -5,3 +5,12 @@
       }
     }
 }
+
+
+{   
+    "init":{     
+        "players":2
+    }
+}
+
+{"init":{"players":2}}
