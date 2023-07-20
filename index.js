@@ -7,27 +7,28 @@ class screen {
   }
 }
 
+const readline = require('readline');
 
+let rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
 
-process.stdin.resume();
-process.stdin.setEncoding('utf8');
+let jsonData = '';
 
-let json = '';
+rl.on('line', function(line){
+  try {
+      jsonData += line.trim();
 
-process.stdin.on('data', function(chunk) {
-  json += chunk;
-
-  while (json.endsWith('\n')) {
-      json = json.slice(0, -2);
-
-      try {
-          const jsonData = JSON.parse(json);
-          console.log('Received JSON data:', jsonData);
-      } catch (error) {
-          console.error('Error parsing JSON:', error);
+      if (jsonData.lastIndexOf('}') === jsonData.length - 1 && jsonData.split('{').length === jsonData.split('}').length) {
+          jsonParsed = JSON.parse(jsonData);
+          console.log("jsonParsed :" + jsonParsed);
       }
 
-      json = '';
+      console.log('Received JSON data:', jsonData);
+  } catch (error) {
+      console.error('Error parsing JSON:', error);
   }
 });
 
