@@ -15,6 +15,18 @@ let rl = readline.createInterface({
   terminal: false
 });
 
+let init = function(init) {
+  if (!init.hasOwnProperty('init')) {
+    return "no init field";
+  }
+  if (!init.hasOwnProperty('players')) {
+    return "no players field";
+  }
+  if (Object.keys(init).length === 0) {
+    console.log("The JSON object contains the field 'players'.");
+  }
+}
+
 let jsonData = '';
 
 rl.on('line', function(line){
