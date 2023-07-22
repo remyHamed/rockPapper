@@ -26,8 +26,23 @@ class screen {
       return "no actions field";
     }
     const actions = json.actions;
-    
-    
+    actions.forEach(action => {
+      if (!action.hasOwnProperty('type')) {
+        return "no type field";
+      }
+      if (!action.hasOwnProperty('player')) {
+        return "no player field";
+      }
+      if (!action.hasOwnProperty('zone')) {
+        return "no zone field";
+      }
+      if (!action.hasOwnProperty('value')) {
+        return "no value field";
+      }
+      if (Object.keys(action).length === 0 || Object.keys(action).length > 4) {
+        console.log("The JSON object contains the field 'actions'.");
+      }
+    });
   }
 }
 

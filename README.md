@@ -10,3 +10,5 @@ definir les args
     si c'est un click
     pour le code du prof les coordonées
 
+converteur:
+https://products.aspose.com/svg/net/vectorization/#plugin
