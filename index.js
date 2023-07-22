@@ -6,23 +6,28 @@ class screen {
 
   init(json) {
     console.log('This is int in MyClass screen ' + json);
-    if (!init.hasOwnProperty('init')) {
+    if (!json.hasOwnProperty('init')) {
       return "no init field";
     }
     //TODO: return error if init is not an object
-    if (!init.hasOwnProperty('players')) {
+    if (!json.hasOwnProperty('players')) {
       return "no players field";
     }
     //TODO: return error if init don't have players field
-    if (Object.keys(init).length === 0 || Object.keys(init.players).length > 2) {
+    if (Object.keys(json.init).length === 0 || Object.keys(json.init).length > 2) {
       console.log("The JSON object contains the field 'players'.");
     }
     //TODO: return error if init is empty or have too many playerguments
     //TODO: return 
   }
 
-  myMethod(json) {
-      console.log('This is a method in MyClass ' + json);
+  runActions(json) {
+    if (!json.hasOwnProperty('actions')) {
+      return "no actions field";
+    }
+    const actions = json.actions;
+    
+    
   }
 }
 
@@ -47,6 +52,7 @@ rl.on('line', function(line){
           let screen = new screen();
           screen.init(jsonParsed);
           //ToDo: Analyse actions
+          screen.runActions(jsonParsed);
           //draw the svg
       }
 
