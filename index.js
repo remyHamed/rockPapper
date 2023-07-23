@@ -8,7 +8,13 @@ class screen {
 
   constructor() {
     this.currentPlayer = 1;
-    this.actions = [];
+    this.grid = [
+      [1, 2, 0],
+      [3, 3, 3],
+      [1, 2, 0,]
+    ];
+    this.j1 = 0;
+    this.j2 = 0;
     this.score = [];
     this.winner = null;
   }
@@ -147,41 +153,41 @@ class screen {
     let obj;
     if(this.currentPlayer === 1){
         obj = [
-            {
-                "x": 200,
-                "y": 0,
-                "width": 100,
-                "height": 100
-            },
-            {
-                "x": 200,
-                "y": 100,
-                "width": 100,
-                "height": 100
-            },
-            {
-                "x": 200,
-                "y": 200,
-                "width": 100,
-                "height": 100
-            }
+          {
+            "x": 0,// leaf
+            "y": 0,
+            "width": 100,
+            "height": 100
+          },
+          {
+            "x": 0, //scicores
+            "y": 100,
+            "width": 100,
+            "height": 100
+          },
+          {
+            "x": 0, //rock
+            "y": 200,
+            "width": 100,
+            "height": 100
+          }
         ];
     }
     if(this.currentPlayer === 2){
-      obj = [{
-        "x": 200,
+      obj = [ {
+        "x": 200,// leaf
         "y": 0,
         "width": 100,
         "height": 100
       },
       {
-        "x": 200,
+        "x": 200,//scicores
         "y": 100,
         "width": 100,
         "height": 100
       },
       {
-        "x": 200,
+        "x": 200,//rock
         "y": 200,
         "width": 100,
         "height": 100
@@ -212,6 +218,35 @@ class screen {
         }
     }
 
+    clickZone(x, y) {
+      x = mathfloor(x / 100);
+      x = mathfloor(x / 100);
+      if (x < 0 ) {
+        throw new Error("x not in range");   
+      }
+      if ( y < 0) {
+        throw new Error("y not in range");   
+      }
+      //TODO: check if ther is no middle line coordo
+      if(this.currentPlayer === 1){
+        this.j1 = this.grid[x][y];
+      }
+      if(this.currentPlayer === 2){
+        this.j2 = this.grid[x][y];
+      }
+      this.winner = this.runGame(this.j1, this.j2);
+      switch (this.winner) {
+        case "j1":
+          this.score[0] += 1;
+          break;
+        case "j2":
+          this.score[1] += 1;
+          break;
+        default:
+          break
+      }
+    }
+
 }
 
 const readline = require('readline');
@@ -224,6 +259,9 @@ let rl = readline.createInterface({
 
 
 let jsonData = '';
+let trigger = false;
+let screen = new screen();
+
 
 rl.on('line', function(line){
   try {
@@ -234,14 +272,17 @@ rl.on('line', function(line){
       if (jsonData.lastIndexOf('}') === jsonData.length - 1 && jsonData.split('{').length === jsonData.split('}').length) {
           jsonParsed = JSON.parse(jsonData);
           console.log("jsonParsed :" + JSON.stringify(jsonParsed));
-          //let screen = new screen();
-          //screen.init(jsonParsed);
+          if(trigger === false){
+            screen.init(jsonParsed);
+            trigger = true;
+          } else {
+            screen.runActions(jsonParsed)
+          }
           //ToDo: Analyse actions
           //screen.runActions(jsonParsed);
 
           console.log("-------------------------------TOURNE-------------------------------------");
           jsonData = '';
-          //draw the svg
       }
 
       console.log('Received JSON data:', jsonData);
