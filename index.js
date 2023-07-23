@@ -75,7 +75,7 @@ class screen {
       );
     }
 
-    if (!Array.isArray(actions)) {
+    if (!Array.isArray(json.actions)) {
       this.printError(
         "BAD_FORMAT",
         false,
@@ -85,7 +85,7 @@ class screen {
       return false;
     }
 
-    if (actions.length != 1) {
+    if (json.actions.length != 1) {
       this.printError(
         "BAD_FORMAT",
         false,
@@ -220,8 +220,8 @@ class screen {
     }
 
     clickZone(x, y) {
-      x = mathfloor(x / 100);
-      x = mathfloor(x / 100);
+      x = Math.floor(x / 100);
+      y = Math.floor(y / 100);
       if (x < 0 ) {
         throw new Error("x not in range");   
       }
