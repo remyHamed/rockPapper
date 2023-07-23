@@ -1,7 +1,16 @@
+const CHOICES = {
+  ROCK: 0,
+  PAPER: 1,
+  SCISSORS: 2
+};
+
 class screen {
 
   constructor() {
-    this.currentPlayers = 1;
+    this.players = [];
+    this.actions = [];
+    this.score = [];
+    this.winner = null;
   }
 
   init(json) {
@@ -44,6 +53,20 @@ class screen {
       }
     });
   }
+
+  ReadAction(action) {
+
+  }
+
+  runGame(playerChoice, computerChoice) {
+
+        if (playerChoice === computerChoice) {
+            return "tie";
+        }
+        let result = (3 + playerChoice - computerChoice) % 3;
+        return result === 1 ? "j1" : "j2";
+    }
+
 }
 
 const readline = require('readline');
@@ -60,14 +83,19 @@ let jsonData = '';
 rl.on('line', function(line){
   try {
       jsonData += line.trim();
-
+      if(jsonData.length === 0){
+        return
+      }
       if (jsonData.lastIndexOf('}') === jsonData.length - 1 && jsonData.split('{').length === jsonData.split('}').length) {
           jsonParsed = JSON.parse(jsonData);
-          console.log("jsonParsed :" + jsonParsed);
-          let screen = new screen();
-          screen.init(jsonParsed);
+          console.log("jsonParsed :" + JSON.stringify(jsonParsed));
+          //let screen = new screen();
+          //screen.init(jsonParsed);
           //ToDo: Analyse actions
-          screen.runActions(jsonParsed);
+          //screen.runActions(jsonParsed);
+
+          console.log("-------------------------------TOURNE-------------------------------------");
+          jsonData = '';
           //draw the svg
       }
 
