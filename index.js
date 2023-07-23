@@ -7,7 +7,7 @@ const CHOICES = {
 class screen {
 
   constructor() {
-    this.players = [];
+    this.currentPlayer = 1;
     this.actions = [];
     this.score = [];
     this.winner = null;
@@ -78,7 +78,6 @@ class screen {
       );
       return false;
     }
-    //todo check length of actions
 
     if (actions.length != 1) {
       this.printError(
@@ -97,8 +96,8 @@ class screen {
         "message",
         "action is not an object"
       );
+      return false;
     }
-
     if (!action.hasOwnProperty('player')) {
       this.printError(
         "BAD_FORMAT",
@@ -106,6 +105,7 @@ class screen {
         "message",
         "action is not containing player"
       );
+      return false;
     }
     if (!action.hasOwnProperty('x')) {
       this.printError(
@@ -114,6 +114,7 @@ class screen {
         "message",
         "action is not containing x"
       );
+      return false;
     }
     if (!action.hasOwnProperty('y')) {
       this.printError(
@@ -122,15 +123,27 @@ class screen {
         "message",
         "action is not containing y"
       );
+      return false;
     }
 
-    if (Object.keys(action).length === 0 || Object.keys(action).length > 4) {
-      console.log("The JSON object contains the field 'actions'.");
+    if( parseInt(action.player) !== this.currentPlayer) {
+      this.printError(
+        "MISSING_ACTION",
+        false,
+        "player",
+        this.currentPlayer,
+        "requested_action",
+        "{ \"type\" : \"CLICK\",\"player\": " +
+        this.currentPlayer +
+        ",\"zones\" :" +
+        this.getAvailableZones() + "}"
+      );
+      return false;
     }
-    
+  
   }
 
-  ReadAction(action) {
+  getAvailableZones(){
 
   }
 
