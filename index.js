@@ -16,15 +16,44 @@ class screen {
   init(json) {
     console.log('This is int in MyClass screen ' + json);
     if (!json.hasOwnProperty('init')) {
-      return "no init field";
+      this.printError(
+        "BAD_FORMAT",
+        true,
+        "message",
+        "init key is missing"
+      );
     }
     //TODO: return error if init is not an object
-    if (!json.hasOwnProperty('players')) {
-      return "no players field";
+    if (!json.init.hasOwnProperty('players')) {
+      this.printError(
+        "MISSING_ARGUMENT",
+        true,
+        "name",
+        "players",
+        "type",
+        "int",
+        "min",
+        2,
+        "max",
+        2,
+        "description",
+         "number of players"
+      );
     }
     //TODO: return error if init don't have players field
-    if (Object.keys(json.init).length === 0 || Object.keys(json.init).length > 2) {
-      console.log("The JSON object contains the field 'players'.");
+    if (Object.keys(json.init).length > 1) {
+      for(const key in json.init) {
+        if (key !== 'players') {
+          this.printError(
+            "UNEXPECTED_ARGUMENT",
+            true,
+            "argname",
+            key.toString(),
+            "value",
+            json.init[key].toString()
+          );
+        }
+      }
     }
     //TODO: return error if init is empty or have too many playerguments
     //TODO: return 
@@ -32,26 +61,73 @@ class screen {
 
   runActions(json) {
     if (!json.hasOwnProperty('actions')) {
-      return "no actions field";
+      this.printError(
+        "BAD_FORMAT",
+        true,
+        "message",
+        "actions key is missing"
+      );
     }
-    const actions = json.actions;
-    actions.forEach(action => {
-      if (!action.hasOwnProperty('type')) {
-        return "no type field";
-      }
-      if (!action.hasOwnProperty('player')) {
-        return "no player field";
-      }
-      if (!action.hasOwnProperty('zone')) {
-        return "no zone field";
-      }
-      if (!action.hasOwnProperty('value')) {
-        return "no value field";
-      }
-      if (Object.keys(action).length === 0 || Object.keys(action).length > 4) {
-        console.log("The JSON object contains the field 'actions'.");
-      }
-    });
+
+    if (!Array.isArray(actions)) {
+      this.printError(
+        "BAD_FORMAT",
+        false,
+        "message",
+        "actions value is not a list"
+      );
+      return false;
+    }
+    //todo check length of actions
+
+    if (actions.length != 1) {
+      this.printError(
+        "BAD_FORMAT",
+        false,
+        "message",
+        "exactly one action is expected"
+      );
+      return false;
+    }
+    const action = json.actions[0];
+    if (typeof action !== 'object') {
+      this.printError(
+        "BAD_FORMAT",
+        false,
+        "message",
+        "action is not an object"
+      );
+    }
+
+    if (!action.hasOwnProperty('player')) {
+      this.printError(
+        "BAD_FORMAT",
+        false,
+        "message",
+        "action is not containing player"
+      );
+    }
+    if (!action.hasOwnProperty('x')) {
+      this.printError(
+        "BAD_FORMAT",
+        false,
+        "message",
+        "action is not containing x"
+      );
+    }
+    if (!action.hasOwnProperty('y')) {
+      this.printError(
+        "BAD_FORMAT",
+        false,
+        "message",
+        "action is not containing y"
+      );
+    }
+
+    if (Object.keys(action).length === 0 || Object.keys(action).length > 4) {
+      console.log("The JSON object contains the field 'actions'.");
+    }
+    
   }
 
   ReadAction(action) {
@@ -65,6 +141,19 @@ class screen {
         }
         let result = (3 + playerChoice - computerChoice) % 3;
         return result === 1 ? "j1" : "j2";
+    }
+
+    printError(typeError, fatal=false,...args) {
+        console.error(typeError, ...args);
+        json = {"type": typeError};
+        for (let i = 0; i < args.length; i += 2) {
+          const key = args[i];
+          const value = args[i + 1];
+          json[key] = value;
+        }
+        if (fatal) {
+          process.exit(1);
+        }
     }
 
 }
