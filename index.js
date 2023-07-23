@@ -144,7 +144,50 @@ class screen {
   }
 
   getAvailableZones(){
-
+    let obj;
+    if(this.currentPlayer === 1){
+        obj = [
+            {
+                "x": 200,
+                "y": 0,
+                "width": 100,
+                "height": 100
+            },
+            {
+                "x": 200,
+                "y": 100,
+                "width": 100,
+                "height": 100
+            },
+            {
+                "x": 200,
+                "y": 200,
+                "width": 100,
+                "height": 100
+            }
+        ];
+    }
+    if(this.currentPlayer === 2){
+      obj = [{
+        "x": 200,
+        "y": 0,
+        "width": 100,
+        "height": 100
+      },
+      {
+        "x": 200,
+        "y": 100,
+        "width": 100,
+        "height": 100
+      },
+      {
+        "x": 200,
+        "y": 200,
+        "width": 100,
+        "height": 100
+      }];
+    }
+    return JSON.stringify(obj);
   }
 
   runGame(playerChoice, computerChoice) {

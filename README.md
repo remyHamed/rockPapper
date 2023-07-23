@@ -12,3 +12,5 @@ definir les args
 
 converteur:
 https://products.aspose.com/svg/net/vectorization/#plugin
+
+  
