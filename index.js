@@ -207,12 +207,13 @@ class screen {
 
     printError(typeError, fatal=false,...args) {
         console.error(typeError, ...args);
-        json = {"type": typeError};
+        let json = {"type": typeError};
         for (let i = 0; i < args.length; i += 2) {
           const key = args[i];
           const value = args[i + 1];
           json[key] = value;
         }
+        console.error(JSON.stringify(json));
         if (fatal) {
           process.exit(1);
         }
@@ -260,7 +261,7 @@ let rl = readline.createInterface({
 
 let jsonData = '';
 let trigger = false;
-let screen = new screen();
+let gameManager = new screen();
 
 
 rl.on('line', function(line){
@@ -273,10 +274,10 @@ rl.on('line', function(line){
           jsonParsed = JSON.parse(jsonData);
           console.log("jsonParsed :" + JSON.stringify(jsonParsed));
           if(trigger === false){
-            screen.init(jsonParsed);
+            gameManager.init(jsonParsed);
             trigger = true;
           } else {
-            screen.runActions(jsonParsed)
+            gameManager.runActions(jsonParsed)
           }
           //ToDo: Analyse actions
           //screen.runActions(jsonParsed);

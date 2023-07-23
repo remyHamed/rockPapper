@@ -1,6 +1,7 @@
 {   
     "init":{     
-        "players":2
+        "players":2,
+        "playersd":2
     }
 }
 
