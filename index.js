@@ -4,7 +4,7 @@ const CHOICES = {
   SCISSORS: 2
 };
 
-class screen {
+class GameManager {
 
   constructor() {
     this.currentPlayer = 1;
@@ -146,6 +146,28 @@ class screen {
       );
       return false;
     }
+
+    try{
+      this.clickZone(parseInt(action.x), parseInt(action.y));
+    } catch (error) {
+      this.printError(
+        "WRONG_ACTION",
+        false,
+        "subtype",
+        "OUT_OF_ZONE",
+        "player",
+        this.currentPlayer.toString(),
+        "action",
+        action.toString(),
+        "request_action",
+        "{ \"type\" : \"CLICK\",\"player\": " +
+        this.currentPlayer +
+        ",\"zones\" :" +
+        this.getAvailableZones() + "}"
+      );
+      return false;
+    }
+
   
   }
 
@@ -261,7 +283,7 @@ let rl = readline.createInterface({
 
 let jsonData = '';
 let trigger = false;
-let gameManager = new screen();
+let gameManager = new GameManager();
 
 
 rl.on('line', function(line){
