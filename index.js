@@ -15,7 +15,7 @@ class GameManager {
     ];
     this.j1 = 0;
     this.j2 = 0;
-    this.score = [];
+    this.score = [0,0];
     this.winner = null;
   }
 
@@ -241,7 +241,12 @@ class GameManager {
         }
     }
 
+    printInsturctionb() {
+
+    }
+
     clickZone(x, y) {
+
       x = Math.floor(x / 100);
       y = Math.floor(y / 100);
       if (x < 0 ) {
@@ -250,9 +255,16 @@ class GameManager {
       if ( y < 0) {
         throw new Error("y not in range");   
       }
+      if(x == 1) {
+        this.score = [0,0];
+        return;
+      }
       //TODO: check if ther is no middle line coordo
       if(this.currentPlayer === 1){
         this.j1 = this.grid[x][y];
+        this.currentPlayer = 2;
+        this.score = [0,0];
+        return;
       }
       if(this.currentPlayer === 2){
         this.j2 = this.grid[x][y];
@@ -268,6 +280,7 @@ class GameManager {
         default:
           break
       }
+      //print app return
     }
 
 }
@@ -299,11 +312,9 @@ rl.on('line', function(line){
             gameManager.init(jsonParsed);
             trigger = true;
           } else {
-            gameManager.runActions(jsonParsed)
+            gameManager.runActions(jsonParsed);
+            //todo check the return of runActions
           }
-          //ToDo: Analyse actions
-          //screen.runActions(jsonParsed);
-
           console.log("-------------------------------TOURNE-------------------------------------");
           jsonData = '';
       }
